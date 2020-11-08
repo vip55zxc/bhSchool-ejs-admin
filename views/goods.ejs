@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%=pageData.title%>
+    </title>
+    <link rel="stylesheet" href="../public/libs/spectre/spectre.min.css" />
+    <link rel="stylesheet" href="../public/libs/spectre/spectre-exp.min.css" />
+    <link rel="stylesheet" href="../public/libs/spectre/spectre-icons.min.css" />
+    <script src="../public/javascripts/jquery-3.3.1.min.js"></script>
+
+</head>
+
+<body>
+    <div class="columns float-right">
+        <div class="column col-12">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item active">
+                    <a href="/gg">
+                        公告管理
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/store">
+                        店铺管理
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/goodss">
+                        商品管理
+                    </a>
+                </li>
+                
+                <li class="breadcrumb-item">
+                        <a href="/exit">
+                        登 出
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    
+
+    <div class="container pt-10">
+        <div class="columns col-12" style="margin-left:0">
+            <div class="column col-10" style="margin: auto">
+                <!-- 添加商品分类 -->
+                <h1><%=pageData.name%><a href="#add_modals" data-storeName="<%=pageData.name%>" data-storeId="<%=pageData.id%>" class="update-action btn btn-primary btn-action btn-lg" style="margin-right: 4px;width: 248px;
+                    float: right;">
+                    <i class="icon icon-plus"></i>&nbsp;&nbsp;添加商品分类
+                </a></h1>
+                <hr />
+                <table class="table table-striped table-hover" style="margin-top: 20px;">
+                    <tr>
+                        <th>编号</th>
+                        <th>商品分类</th>
+                        <th>店铺编号</th>
+                        <th>操作</th>
+                    </tr>
+                    <%if(pageData.list){
+                        pageData.list.forEach(function (e) {%>
+                    <tr class="active">
+                        <td>
+                            <%=e._id%>
+                        </td>
+                        <td>
+                            <%=e.name%>
+                        </td>
+                        <td>
+                            <%=e.store%>
+                        </td>
+                        <td>
+                            <!-- 添加商品 -->
+                            <a href="#update_modals" data-id="<%=e._id%>" data-storeName="<%=pageData.name%>" data-storeId="<%=pageData.id%>" data-token="<%=pageData.token%>"
+                                class="update-action btn btn-primary btn-action btn-lg dat" style="margin-right: 4px;width: 248px">
+                                <i class="icon icon-plus"></i>&nbsp;&nbsp;添加商品
+                            </a>
+                            <!-- 修改分类 -->
+                            <a href="#update_category_modals" data-id="<%=e._id%>" data-name="<%=e.name%>" data-storeName="<%=pageData.name%>" data-storeId="<%=pageData.id%>" data-token="<%=pageData.token%>"
+                                class="update-action btn btn-primary btn-action btn-lg">
+                                <i class="icon icon-edit"></i>
+                            </a>
+                            <!-- 管理商品  id=<%=pageData.id%>& -->
+                            <a href="/goodss?categoryName=<%=e.name%>" class="btn btn-primary btn-action btn-lg disabled tooltip tooltip-top" data-tooltip="功能正在开发ing">
+                                <i class="icon icon-more-horiz"></i>
+                            </a>
+                            <!-- 删除商品分类按钮 -->
+                            <a href="/goods/del?id=<%=e._id%>&token=<%=pageData.token%>" class="btn btn-primary btn-action btn-lg tooltip tooltip-right" data-tooltip="谨慎操作！">
+                                <i class="icon icon-delete"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <%});}else{%>
+                    <tr class="active">
+                        <td>暂无数据</td>
+                    </tr>
+                    <%}%>
+
+                </table>
+
+
+            </div>
+
+
+        </div>
+    </div>
+    <!--add 添加商品模态窗 -->
+    <a id="cf_update_modals" href="#update_modals" style="display:none">添加商品</a>
+    <section id="close_modals" class="container">
+        <div class="columns">
+            <div class="column">
+                <div class="modal" id="update_modals">
+                    <a href=" " class="modal-overlay" aria-label="Close"></a>
+                    <div class="modal-container" role="document">
+                        <div class="modal-header">
+                            <a href="#close_modals" class="btn btn-clear float-right" aria-label="Close"></a>
+                            <div class="modal-title">添加商品信息</div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="content" style="width: 600px">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-3">
+                                            <label class="form-label" for="up-designer-name">商品名称</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input class="form-input" type="text" name="content" id="add_goods_name" />
+                                            <input class="form-input" type="hidden" disabled="disabled" name="id" id="add_goods_id" />
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <div class="col-3">
+                                            <label class="form-label" for="up-designer-name">商品价格</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input class="form-input" type="text" name="content" id="add_goods_price" />
+                                            <input class="form-input" type="hidden" disabled="disabled" name="id" id="add_goods_id" />
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <!-- form structure -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#close_modals" class="btn btn-link">关闭</a>
+                            <button id="add_goods_btn" type="button" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--update 修改商品分类模态窗 -->
+    <a id="cf_update_modals" href="#update_category_modals" style="display:none">修改分类</a>
+    <section id="close_modals" class="container">
+        <div class="columns">
+            <div class="column">
+                <div class="modal" id="update_category_modals">
+                    <a href=" " class="modal-overlay" aria-label="Close"></a>
+                    <div class="modal-container" role="document">
+                        <div class="modal-header">
+                            <a href="#close_modals" class="btn btn-clear float-right" aria-label="Close"></a>
+                            <div class="modal-title">修改分类</div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="content" style="width: 600px">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-3">
+                                            <label class="form-label" for="up-designer-name">分类名称</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input class="form-input" type="text" name="content" id="update_category_name" />
+                                            <input class="form-input" type="hidden" disabled="disabled" name="id" id="update_category_id" />
+                                        </div>
+                                    </div> 
+                                    <!-- form structure -->
+                                </div>
+                        </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#close_modals" class="btn btn-link">关闭</a>
+                            <button id="update_category_btn" type="button" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- add商品分类模态窗 -->
+    <a id="cf_add_modals" href="#add_modals" style="display:none">添加分类触发按钮</a>
+    <section id="close_modals" class="container">
+        <div class="columns">
+            <div class="column">
+                <div class="modal" id="add_modals">
+                    <a href=" " class="modal-overlay" aria-label="Close"></a>
+                    <div class="modal-container" role="document">
+                        <div class="modal-header">
+                            <a href="#close_modals" class="btn btn-clear float-right" aria-label="Close"></a>
+                            <div class="modal-title">添加商品分类</div>
+                        </div>
+                        <div class="modal-body">
+                            <div class="content" style="width: 600px">
+                                <div class="form-horizontal">
+                                    <div class="form-group">
+                                        <div class="col-3">
+                                            <label class="form-label" for="up-designer-name">分类名称</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input class="form-input" type="text" name="name" id="add_category_name" />
+                                        </div>
+                                    </div>
+                                    <!-- form structure -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#close_modals" class="btn btn-link">关闭</a>
+                            <button id="add_category_btn" type="button" class="btn btn-primary">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!-- 添加分类 提示框-->
+    <div  class="columns col-3 float-right" id="success" style="display:none">
+            <div class="column col-10">
+                <div class="toast toast-success">
+                    <button class="btn btn-clear float-right" type="button" onClick="closeTip(this)"></button>
+                    添加分类成功！
+                </div>
+            </div>
+    </div>
+    <div class="columns col-3 float-right" id="error" style="display:none">
+            <div class="column col-10">
+                <div class="toast toast-error">
+                    <button class="btn btn-clear float-right" type="button" onClick="closeTip(this)"></button>
+                    添加分类失败！
+                </div>
+            </div>
+    </div>
+    <!-- 修改分类 提示框-->
+    <div  class="columns col-3 float-right" id="category_success" style="display:none">
+            <div class="column col-10">
+                <div class="toast toast-success">
+                    <button class="btn btn-clear float-right" type="button" onClick="closeTip(this)"></button>
+                    修改分类成功！
+                </div>
+            </div>
+    </div>
+    <div class="columns col-3 float-right" id="category_error" style="display:none">
+            <div class="column col-10">
+                <div class="toast toast-error">
+                    <button class="btn btn-clear float-right" type="button" onClick="closeTip(this)"></button>
+                    修改分类失败！
+                </div>
+            </div>
+    </div>
+<!-- 添加商品 提示框 -->
+    <div  class="columns col-3 float-right" id="goods_success" style="display:none">
+            <div class="column col-10">
+                <div class="toast toast-success">
+                    <button class="btn btn-clear float-right" type="button" onClick="closeTip(this)"></button>
+                    添加商品成功！
+                </div>
+            </div>
+    </div>
+    <div class="columns col-3 float-right" id="goods_error" style="display:none">
+        <div class="column col-10">
+            <div class="toast toast-error">
+                <button class="btn btn-clear float-right" type="button" onClick="closeTip(this)"></button>
+                添加商品失败！
+            </div>
+        </div>
+    </div>
+
+    <script>
+         // 添加商品分类
+        $('.update-action').click(function (e) {
+           var store = e.currentTarget.getAttribute('data-storeId')
+           var storeName = e.currentTarget.getAttribute('data-storeName')
+
+            // 开启修改modal
+            $('#cf_update_modals').click()
+
+            $('#add_category_btn').click(function () {
+                $.ajax({
+                    url: '/goods/create',
+                    method: 'POST',
+                    data: {
+                        name: $('#add_category_name').val(),
+                        store: store
+                    },
+                    success: function (res) {
+                        // todo 判断res.data.code ==0 
+                        if(res.data.code == 1){
+                            $('#success').css('display','block')
+                        }else{
+                            $('#error').css('display','block')
+                        }
+                        setTimeout(function () {
+                            window.location.href = '/goods?id='+store+'&'+'name='+storeName
+                        }, 500)
+
+                        // 1 失败
+                    }
+                })
+            })
+        })
+        //修改分类
+        $('.update-action').click(function (e) {
+            var id = e.currentTarget.getAttribute('data-id')
+            var name = e.currentTarget.getAttribute('data-name') 
+            var store = e.currentTarget.getAttribute('data-storeId')
+            var storeName = e.currentTarget.getAttribute('data-storeName')
+
+            $('#update_category_name').val(name)
+
+            // 开启修改modal
+            $('#cf_update_modals').click()
+            $('#update_category_btn').click(function () {
+                $.ajax({
+                    url: '/goods/update',
+                    method: 'POST',
+                    data: {
+                        id: id,
+                        name: $('#update_category_name').val(),
+                        store: store
+                    },
+                    success: function (res) {
+                        // todo 判断res.data.code ==0 
+                        if(res.data.code == 1){
+                        $('#category_success').css('display','block')
+                    }else{
+                        $('#category_error').css('display','block')
+                    }
+                    setTimeout(function () {
+                            window.location.href = '/goods?id='+store+'&'+'name='+storeName
+                        }, 500)
+
+                        // 1 失败
+                    }
+                })
+            })
+
+
+
+        })
+
+// 添加商品信息
+        $('.dat').click(function (e) {
+            var store = e.currentTarget.getAttribute('data-storeId')
+            var storeName = e.currentTarget.getAttribute('data-storeName')
+            var category = e.currentTarget.getAttribute('data-id')
+            console.log('x',category,store,storeName)
+            // 开启修改modal
+            $('#cf_update_modals').click()
+
+            $('#add_goods_btn').click(function () {
+                var goodsName = $('#add_goods_name').val()
+                var price = $('#add_goods_price').val()
+                
+            console.log('xx',goodsName,price,category)
+
+                $.ajax({
+                    url: '/goods/createGoods',
+                    method: 'POST',
+                    data: {
+                        name: goodsName,
+                        price: price,
+                        category: category
+                    },
+                    success: function (res) {
+                        // todo 判断res.data.code ==0
+                        if(res.data.code == 1){
+                            $('#goods_success').css('display','block')
+                        }else{
+                            $('#goods_error').css('display','block')
+                        }
+                         setTimeout(function () {
+                            window.location.href = '/goods?id='+store+'&'+'name='+storeName
+                        }, 500)
+                        // 1 失败
+                    }
+                })
+            })
+        })
+
+    </script>
+    
+</body>
+
+</html>
